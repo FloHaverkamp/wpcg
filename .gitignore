@@ -1,0 +1,17 @@
+# IntelliJ IDEA
+.idea
+*.iml
+
+# Eclipse
+.settings
+.project
+
+# Gradle
+.gradle
+/build/
+gradle-app.setting
+!gradle-wrapper.jar
+.gradletasknamecache
+
+# OSX
+.DS_STORE

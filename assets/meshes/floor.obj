@@ -1,0 +1,15 @@
+o square
+# Vertices
+v -1.0 0.0 -1.0
+v 1.0 0.0 -1.0
+v -1.0 0.0 1.0
+v 1.0 0.0 1.0
+# Texture Coordinates
+vt 0 1
+vt 1 1
+vt 0 0
+vt 1 0
+# Faces (Triangles)
+usemtl legofloor_texture
+f 1/1 2/2 3/3
+f 2/2 3/3 4/4
