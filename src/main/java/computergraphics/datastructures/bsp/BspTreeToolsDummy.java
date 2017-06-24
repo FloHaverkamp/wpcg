@@ -3,7 +3,6 @@ package computergraphics.datastructures.bsp;
 import java.util.ArrayList;
 import java.util.List;
 
-import computergraphics.datastructures.bsp.BspTreeNode;
 import computergraphics.datastructures.bsp.BspTreeNode.Orientation;
 import computergraphics.math.PrincipalComponentAnalysis;
 import computergraphics.math.Vector;
