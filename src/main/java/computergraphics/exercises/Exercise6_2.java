@@ -22,6 +22,7 @@ public class Exercise6_2 extends Scene {
 	private static final long serialVersionUID = 8141036480333465137L;
 	private Volume volume;
 	private VolumeNode volumeNode;
+	private String axis = "x";
 
 	public Exercise6_2() {
 		// Timer timeout and shader mode (PHONG, TEXTURE, NO_LIGHTING)
@@ -40,9 +41,7 @@ public class Exercise6_2 extends Scene {
 			createTriangleMeshNodes("x");
 			createTriangleMeshNodes("y");
 			createTriangleMeshNodes("z");
-			volumeNode.setDirection("x", getRoot().getCamera().getEye());
-//			volumeNode.setDirection("y", getRoot().getCamera().getEye());
-//			volumeNode.setDirection("z", getRoot().getCamera().getEye());
+			volumeNode.setDirection(axis, getRoot().getCamera().getEye());
 			getRoot().addChild(volumeNode);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -67,14 +66,23 @@ public class Exercise6_2 extends Scene {
 	 */
 	@Override
 	public void redraw(GL2 gl) {
-		volumeNode.setDirection("x", getRoot().getCamera().getEye());
-//		volumeNode.setDirection("y", getRoot().getCamera().getEye());
-//		volumeNode.setDirection("z", getRoot().getCamera().getEye());
+		volumeNode.setDirection(axis, getRoot().getCamera().getEye());
 		super.redraw(gl);
 	}
 
 	@Override
 	public void keyPressed(KeyEvent keyEvent) {
+//		switch (keyEvent.getKeyChar()) {
+//		case KeyEvent.VK_A:
+//			axis = "x";
+//			break;
+//		case KeyEvent.VK_W:
+//			axis = "y";
+//			break;
+//		case KeyEvent.VK_D:
+//			axis = "z";
+//			break;
+//		}
 	}
 
 	@Override
