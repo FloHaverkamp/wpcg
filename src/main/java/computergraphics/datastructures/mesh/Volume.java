@@ -237,40 +237,6 @@ public class Volume {
 	}
 
 	/**
-	 * 
-	 * @param axis
-	 * @param eye
-	 * @return backToFront-ordered TriangleMesh-List according to eye
-	 */
-	public List<TriangleMesh> getOrderedByEye(String axis, Vector eye) {
-		List<TriangleMesh> orderedTriangleMeshes = new ArrayList<>();
-		List<TriangleMesh> triangleMesh = getTriangleMeshes().get(axis);
-		List<Vector> centers = getCenters().get(axis);
-
-		// build connection vectors with first and last plane
-		Vector first = centers.get(0);
-		Vector last = centers.get(centers.size() - 1);
-		Vector eyeFirst = first.subtract(eye);
-		Vector eyeLast = last.subtract(eye);
-
-		// calculate length of both vectors and compare
-		// squared root (x^2 + y^2 + z^2)
-		double lengthEyeFirst = Math
-				.sqrt(Math.pow(eyeFirst.x(), 2) + Math.pow(eyeFirst.y(), 2) + Math.pow(eyeFirst.z(), 2));
-		double lengthEyeLast = Math
-				.sqrt(Math.pow(eyeLast.x(), 2) + Math.pow(eyeLast.y(), 2) + Math.pow(eyeLast.z(), 2));
-
-		if (lengthEyeFirst - lengthEyeLast < 0) {
-			// first Plane is nearer to eye than last
-			// --> last plane has to be computed first
-			Collections.reverse(triangleMesh);
-		}
-		orderedTriangleMeshes = triangleMesh;
-
-		return orderedTriangleMeshes;
-	}
-
-	/**
 	 * makes setup easier Resolution might need to be adjusted depending on
 	 * hardware!
 	 * 
@@ -329,15 +295,8 @@ public class Volume {
 		return triangleMeshes;
 	}
 
-	public void setTriangleMeshes(Map<String, List<TriangleMesh>> triangleMeshes) {
-		this.triangleMeshes = triangleMeshes;
-	}
-
 	public Map<String, List<Vector>> getCenters() {
 		return centers;
 	}
 
-	public void setCenters(Map<String, List<Vector>> centers) {
-		this.centers = centers;
-	}
 }

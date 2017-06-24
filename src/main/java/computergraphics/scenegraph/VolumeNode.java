@@ -19,15 +19,18 @@ public class VolumeNode extends InnerNode {
 	 * in the following Order: x1,y1,z1, x2,y2,z2, x3,...
 	 */
 	public List<INode> childrenX = new ArrayList<INode>();
+	public List<INode> childrenXReversed = new ArrayList<INode>();
+
 	public List<INode> childrenY = new ArrayList<INode>();
+	public List<INode> childrenYReversed = new ArrayList<INode>();
+
 	public List<INode> childrenZ = new ArrayList<INode>();
+	public List<INode> childrenZReversed = new ArrayList<INode>();
 
 	private Volume volume;
-	private Vector eye;
 
-	public VolumeNode(Volume volume, Vector eye) {
+	public VolumeNode(Volume volume) {
 		this.volume = volume;
-		this.eye = eye;
 	}
 
 	/**
@@ -36,34 +39,31 @@ public class VolumeNode extends InnerNode {
 	 * 
 	 * @param axis
 	 * @param eye
-	 * @return list of TriangleMeshNodes ordered backToFront according to input
-	 *         eye
+	 * @return true if first plane is nearer to eye than last one
 	 */
-//	private List<TriangleMeshNode> getMeshInOrder(String axis, List<TriangleMeshNode> nodes, Vector eye) {
-//		List<TriangleMeshNode> orderedTriangleMesheNodes = new ArrayList<>();
-//		List<Vector> centers = volume.getCenters().get(axis);
-//
-//		// build connection vectors with first and last plane
-//		Vector first = centers.get(0);
-//		Vector last = centers.get(centers.size() - 1);
-//		Vector eyeFirst = first.subtract(eye);
-//		Vector eyeLast = last.subtract(eye);
-//
-//		// calculate length of both vectors and compare
-//		// squared root (x^2 + y^2 + z^2)
-//		double lengthEyeFirst = Math
-//				.sqrt(Math.pow(eyeFirst.x(), 2) + Math.pow(eyeFirst.y(), 2) + Math.pow(eyeFirst.z(), 2));
-//		double lengthEyeLast = Math
-//				.sqrt(Math.pow(eyeLast.x(), 2) + Math.pow(eyeLast.y(), 2) + Math.pow(eyeLast.z(), 2));
-//
-//		if (lengthEyeFirst - lengthEyeLast < 0) {
-//			// first Plane is nearer to eye than last
-//			// --> last plane has to be computed first
-//			Collections.reverse(nodes);
-//		}
-//		orderedTriangleMesheNodes = nodes;
-//		return orderedTriangleMesheNodes;
-//	}
+	private boolean shouldRenderBackToFront(String axis, Vector eye) {
+		List<Vector> centers = volume.getCenters().get(axis);
+		boolean backToFront = false;
+		// build connection vectors with first and last plane
+		Vector first = centers.get(0);
+		Vector last = centers.get(centers.size() - 1);
+		Vector eyeFirst = first.subtract(eye);
+		Vector eyeLast = last.subtract(eye);
+
+		// calculate length of both vectors and compare
+		// squared root (x^2 + y^2 + z^2)
+		double lengthEyeFirst = Math
+				.sqrt(Math.pow(eyeFirst.x(), 2) + Math.pow(eyeFirst.y(), 2) + Math.pow(eyeFirst.z(), 2));
+		double lengthEyeLast = Math
+				.sqrt(Math.pow(eyeLast.x(), 2) + Math.pow(eyeLast.y(), 2) + Math.pow(eyeLast.z(), 2));
+
+		if (lengthEyeFirst - lengthEyeLast < 0) {
+			// first Plane is nearer to eye than last
+			// --> last plane has to be computed first
+			backToFront = true;
+		}
+		return backToFront;
+	}
 
 	@Override
 	public void traverse(GL2 gl, RenderMode mode, Matrix modelMatrix) {
@@ -74,14 +74,6 @@ public class VolumeNode extends InnerNode {
 	public void timerTick(int counter) {
 	}
 
-	public void setEye(Vector eye) {
-		this.eye = eye;
-	}
-
-	public Vector getEye() {
-		return eye;
-	}
-
 	/**
 	 * Add new child node.
 	 **/
@@ -90,22 +82,54 @@ public class VolumeNode extends InnerNode {
 		switch (axis) {
 		case "x":
 			childrenX.add(child);
+			childrenXReversed.add(0, child);
 			break;
 		case "y":
 			childrenY.add(child);
+			childrenYReversed.add(0, child);
 			break;
 		case "z":
 			childrenZ.add(child);
+			childrenZReversed.add(0, child);
+			break;
+		}
+	}
+	
+	public void setDirection(String axis, Vector eye){
+		if(shouldRenderBackToFront(axis, eye)){
+			System.out.println("back to front");
+			setBackToFront(axis);
+		} else {
+			System.out.println("front to Back");
+			setFrontToBack(axis);
+		}
+	}
+
+	private void setBackToFront(String axis) {
+		switch(axis) {
+		case "x":
+			children = childrenXReversed;
+			break;
+		case "y":
+			children = childrenYReversed;
+			break;
+		case "z":
+			children = childrenZReversed;
 			break;
 		}
 	}
 
-	public void addChildren(INode childX, INode childY, INode childZ) {
-		childX.setParentNode(this);
-		childY.setParentNode(this);
-		childZ.setParentNode(this);
-		children.add(childX);
-		children.add(childZ);
-		children.add(childY);
+	private void setFrontToBack(String axis) {
+		switch(axis) {
+		case "x":
+			children = childrenX;
+			break;
+		case "y":
+			children = childrenY;
+			break;
+		case "z":
+			children = childrenZ;
+			break;
+		}
 	}
 }

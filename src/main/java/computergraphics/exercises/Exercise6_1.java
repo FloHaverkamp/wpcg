@@ -30,20 +30,20 @@ public class Exercise6_1 extends Scene {
 		// Setup scene after OpenGL is ready
 		getRoot().setLightPosition(new Vector(0, 2, 0));
 
-		try {
-			eye = getRoot().getCamera().getEye();
-			volume = new Volume("engine", gl);
-			List<TriangleMesh> tma = volume.getOrderedByEye("x", eye);
-			
-			for (int i = 0; i < tma.size(); i++) {
-				TriangleMeshNode tn = new TriangleMeshNode(tma.get(i));
-				getRoot().addChild(tn);
-			}
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			eye = getRoot().getCamera().getEye();
+//			volume = new Volume("engine", gl);
+//			List<TriangleMesh> tma = volume.getOrderedByEye("x", eye);
+//			
+//			for (int i = 0; i < tma.size(); i++) {
+//				TriangleMeshNode tn = new TriangleMeshNode(tma.get(i));
+//				getRoot().addChild(tn);
+//			}
+//			
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 	@Override
